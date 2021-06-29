@@ -6,26 +6,28 @@ public class SnakeMovement : MonoBehaviour
 {
     public List<Transform> bodyParts = new List<Transform>();
 
-    public float minDistance = 0.25f;
+    public float minDistance = 1f;
 
     public int beginSize;
 
     public float speed = 1;
-    public float rotationSpeed = 50f;
+    public float speedHead = 1000;
 
     public GameObject bodyPrefab;
+    public Rigidbody rigSnakeHead;
 
     private float dis;
     private Transform curBodyPart;
     private Transform prevBodypart;
-
+    private Vector3 vlocitySnake;
 
     void Start()
     {
-        for (int i = 0; i < beginSize-1; i++)
+        for (int i = 0; i < beginSize - 1; i++)
         {
             AddBodyPart();
         }
+        bodyParts[0].GetComponentInParent<SphereCollider>().enabled = true;
     }
 
     void Update()
@@ -47,11 +49,17 @@ public class SnakeMovement : MonoBehaviour
         }
 
         bodyParts[0].Translate(bodyParts[0].forward * curspeed * Time.smoothDeltaTime, Space.World);
-
+        
+        //Движение по оси с помощью rigidbody.velocity
+        vlocitySnake = rigSnakeHead.velocity;
         if (Input.GetAxis("Horizontal") != 0)
         {
-            bodyParts[0].Rotate(Vector3.up * rotationSpeed * Time.deltaTime * Input.GetAxis("Horizontal"));
+            
+                vlocitySnake.z = speedHead * Time.deltaTime * -Input.GetAxis("Horizontal");
+           
         }
+        rigSnakeHead.velocity = vlocitySnake;
+        
         for (int i = 1; i < bodyParts.Count; i++)
         {
             curBodyPart = bodyParts[i];
@@ -65,12 +73,12 @@ public class SnakeMovement : MonoBehaviour
 
             float T = Time.deltaTime * dis / minDistance * curspeed;
 
-            if(T>0.5f)
+            if (T > 0.5f)
             {
                 T = 0.5f;
             }
 
-            curBodyPart.position = Vector3.Slerp(curBodyPart.position, newpos, T);
+            curBodyPart.position = Vector3.MoveTowards(curBodyPart.position, newpos, T);
             curBodyPart.rotation = Quaternion.Slerp(curBodyPart.rotation, prevBodypart.rotation, T);
         }
     }
