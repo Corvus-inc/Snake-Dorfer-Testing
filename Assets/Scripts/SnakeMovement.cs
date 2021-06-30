@@ -6,17 +6,18 @@ public class SnakeMovement : MonoBehaviour
 {
     public List<Transform> bodyParts = new List<Transform>();
 
-    public float minDistance = 1f;
+    public float minDistance = 1.0f;
 
     public int beginSize;
 
-    public float speed = 1;
-    public float speedHead = 1000;
+    public float speed = 1.0f;
+    public float speedHead = 1000.0f;
 
     public GameObject bodyPrefab;
     public Rigidbody rigSnakeHead;
 
-    private float dis;
+    //private float dis;
+    private float followDistance = 1.0f;
     private Transform curBodyPart;
     private Transform prevBodypart;
     private Vector3 vlocitySnake;
@@ -65,21 +66,23 @@ public class SnakeMovement : MonoBehaviour
             curBodyPart = bodyParts[i];
             prevBodypart = bodyParts[i - 1];
 
-            dis = Vector3.Distance(prevBodypart.position, curBodyPart.position);
+            curBodyPart.position = prevBodypart.position + (curBodyPart.position - prevBodypart.position).normalized * followDistance;
 
-            Vector3 newpos = prevBodypart.position;
+            //dis = Vector3.Distance(prevBodypart.position, curBodyPart.position);
 
-            newpos.y = bodyParts[0].position.y;
+            //Vector3 newpos = prevBodypart.position;
 
-            float T = Time.deltaTime * dis / minDistance * curspeed;
+            //newpos.y = bodyParts[0].position.y;
 
-            if (T > 0.5f)
-            {
-                T = 0.5f;
-            }
+            //float T = Time.deltaTime * dis / minDistance * curspeed;
 
-            curBodyPart.position = Vector3.MoveTowards(curBodyPart.position, newpos, T);
-            curBodyPart.rotation = Quaternion.Slerp(curBodyPart.rotation, prevBodypart.rotation, T);
+            //if (T > 0.5f)
+            //{
+            //    T = 0.5f;
+            //}
+
+            //curBodyPart.position = Vector3.MoveTowards(curBodyPart.position, newpos, T);
+            //curBodyPart.rotation = Quaternion.Slerp(curBodyPart.rotation, prevBodypart.rotation, T);
         }
     }
 

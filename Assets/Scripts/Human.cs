@@ -5,9 +5,12 @@ using UnityEngine;
 
 public class Human : MonoBehaviour
 {
-    public int humanTotal = 5;
+    public int humanTotal = 1;
     public DataHuman bonuses;
     public TextMeshProUGUI TextGUI;
+    
+    private int humanDevisor = 3;
+    private SnakeMovement snakeMovement;
 
 
     private LayerMask layerIn;
@@ -18,8 +21,14 @@ public class Human : MonoBehaviour
         layerIn = col.gameObject.layer;
         if (layerIn == LayerMask.NameToLayer("Snake"))
         {
-            //bonuses.AddCrystalBonus(crustalTotal);
-            //TextGUI.text = bonuses.CrystalCounter.ToString();
+            snakeMovement = col.gameObject.GetComponentInParent<SnakeMovement>();
+            if (bonuses.HumanCounter % humanDevisor == 0)
+            {
+                snakeMovement.AddBodyPart();
+            }
+
+            bonuses.AddHumanCount (humanTotal);
+            TextGUI.text = bonuses.HumanCounter.ToString();
             Destroy(gameObject);
         }
 

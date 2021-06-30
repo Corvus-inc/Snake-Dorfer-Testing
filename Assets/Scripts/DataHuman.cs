@@ -4,15 +4,22 @@ using UnityEngine;
 
 public class DataHuman : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    private int _humaanCounter;
+
+    public int HumanCounter
     {
-        
+        get
+        {
+            return _humaanCounter;
+        }
+        private set
+        {
+            _humaanCounter = value;
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    public void AddHumanCount(int bonus)
     {
-        
+        _humaanCounter += bonus;
     }
 }
