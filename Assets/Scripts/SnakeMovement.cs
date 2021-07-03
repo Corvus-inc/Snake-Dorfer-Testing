@@ -88,9 +88,9 @@ public class SnakeMovement : MonoBehaviour
 
     public void AddBodyPart()
     {
-        Transform newPart = (Instantiate(bodyPrefab, bodyParts[bodyParts.Count - 1].position, bodyParts[bodyParts.Count - 1].rotation) as GameObject).transform;
+        Transform newPart = (Instantiate(bodyPrefab, bodyParts[bodyParts.Count - 1].position, bodyParts[bodyParts.Count - 1].rotation, gameObject.transform) as GameObject).transform;
 
-        newPart.SetParent(transform);
+        //newPart.SetParent(transform);
 
         bodyParts.Add(newPart);
     }
